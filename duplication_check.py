@@ -9,6 +9,8 @@ def dt_from_str(st):
 
 
 def check(title):
+    ar = title.split('\n')
+    title = ar[0]
     now = datetime.datetime.now()
     db = gdbm.open("sent.db", 'cs')
     if title not in db:

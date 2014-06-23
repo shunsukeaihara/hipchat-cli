@@ -94,6 +94,8 @@ if [ -z "$INPUT" ]; then
   INPUT=$(cat)
 fi
 
+FLAG=$(python duplication_check.py "${INPUT}")
+
 # replace newlines with XHTML <br>
 if [ $FORMAT == 'html' ]; then
     INPUT=$(echo -n "${INPUT}" | sed "s/$/\<br\>/")
@@ -106,7 +108,6 @@ fi
 # urlencode with perl
 INPUT=$(echo -n "${INPUT}" | perl -p -e 's/([^A-Za-z0-9])/sprintf("%%%02X", ord($1))/seg')
 
-FLAG=$(python duplication_check.py ${INPUT})
 
 if test $FLAG = '1'; then
     # do the curl
