@@ -2,6 +2,22 @@
 import sys
 import gdbm
 import datetime
+import logging
+import logging.handlers
+
+LOG_FILENAME = '/opt/hipchat-cli/log'
+
+# Set up a specific logger with our desired output level
+logger = logging.getLogger('hip')
+logger.setLevel(logging.DEBUG)
+
+# Add the log message handler to the logger
+handler = logging.handlers.RotatingFileHandler(
+              LOG_FILENAME, maxBytes=1000000, backupCount=5)
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
 
 
 def dt_from_str(st):
@@ -10,9 +26,10 @@ def dt_from_str(st):
 
 def check(title):
     ar = title.split('\n')
+    logger.info(title)
     title = ar[0]
     now = datetime.datetime.now()
-    db = gdbm.open("sent.db", 'cs')
+    db = gdbm.open("/opt/hipchat-cli/sent.db", 'cs')
     if title not in db:
         db[title] = str(now)  # 送信時刻更新
         return 1

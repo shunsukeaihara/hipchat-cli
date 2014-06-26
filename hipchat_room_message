@@ -41,6 +41,8 @@ EOF
 # Include hipchat defaults if available
 test -f /etc/hipchat && . /etc/hipchat
 
+echo `date` >> /opt/hipchat-cli/hoge
+
 TOKEN=${HIPCHAT_TOKEN:-}
 ROOM_ID=${HIPCHAT_ROOM_ID:-}
 FROM=${HIPCHAT_FROM:-}
@@ -94,7 +96,7 @@ if [ -z "$INPUT" ]; then
   INPUT=$(cat)
 fi
 
-FLAG=$(python duplication_check.py "${INPUT}")
+FLAG=$(python /opt/hipchat-cli/duplication_check.py "${INPUT}")
 
 # replace newlines with XHTML <br>
 if [ $FORMAT == 'html' ]; then
